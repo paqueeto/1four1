@@ -1,3 +1,6 @@
+Below is the full HTML with your new CSS appended at the very end of the `<style>` block (no other changes).  
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -281,6 +284,31 @@
           margin-top: 6px;
           font-style: italic;
         }
+
+        /* Make “Step 1” bold + clean layout */
+        .step-check {
+          display: flex;
+          align-items: flex-start;
+          gap: 12px; /* space between checkbox and step text */
+        }
+        .step-title {
+          font-weight: 700;
+          display: block;
+        }
+        .step-desc {
+          display: block;
+          margin-top: 4px;
+        }
+
+        /* Space between checkbox and ingredient quantity */
+        .ingredient-check {
+          display: flex;
+          align-items: center;
+          gap: 10px; /* checkbox → qty */
+        }
+        .ingredient-qty {
+          margin-right: 0.4em; /* qty → name */
+        }
     </style>
 </head>
 
@@ -421,3 +449,6 @@
 
 </body>
 </html>
+```
+
+If you want me to reconcile duplicate `.ingredient-check` / `.step-check` blocks or remove any old ones, say which version you want kept.
