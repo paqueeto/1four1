@@ -131,6 +131,81 @@
             border: none;
             cursor: pointer;
         }
+
+        /* --- Mobile & tablet layout fixes --- */
+        @media (max-width: 1200px) {
+          html, body {
+            width: 100%;
+            overflow-x: hidden;
+          }
+
+          .hero {
+            clip-path: none;
+          }
+
+          .container {
+            width: min(100% - 32px, 1000px);
+          }
+        }
+
+        @media (max-width: 900px) {
+          .hero {
+            padding: 48px 0 56px;
+            text-align: center;
+          }
+
+          .meta-cards {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+          }
+
+          .recipe-grid {
+            grid-template-columns: 1fr;
+            gap: 24px;
+          }
+
+          .ingredients-panel,
+          .instructions-panel {
+            padding: 24px;
+            border-radius: 18px;
+          }
+
+          .instruction-step {
+            gap: 12px;
+          }
+
+          .print-btn {
+            position: static;
+            display: block;
+            width: 100%;
+            margin: 16px 0 0;
+          }
+        }
+
+        @media (max-width: 600px) {
+          h1 {
+            font-size: clamp(2.2rem, 9vw, 3rem);
+            line-height: 1.05;
+          }
+
+          .subtitle {
+            font-size: 1.05rem;
+          }
+
+          .cuisine-tag {
+            margin: 0 auto 16px;
+            padding: 6px 16px;
+          }
+
+          .meta-value {
+            font-size: 1.8rem;
+          }
+
+          .tips-section {
+            padding: 24px;
+            border-radius: 18px;
+          }
+        }
     </style>
 </head>
 
