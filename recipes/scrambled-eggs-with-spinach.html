@@ -1,3 +1,6 @@
+Below is the full HTML with your new CSS appended at the very end of the `<style>` block (no other changes).  
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -132,11 +135,31 @@
             cursor: pointer;
         }
 
-        /* --- Mobile & tablet responsiveness --- */
+        /* --- Mobile & tablet layout fixes --- */
+        @media (max-width: 1200px) {
+          html, body {
+            width: 100%;
+            overflow-x: hidden;
+          }
+
+          .hero {
+            clip-path: none;
+          }
+
+          .container {
+            width: min(100% - 32px, 1000px);
+          }
+        }
+
         @media (max-width: 900px) {
           .hero {
-            padding: 56px 0 72px;
-            clip-path: none;
+            padding: 48px 0 56px;
+            text-align: center;
+          }
+
+          .meta-cards {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
           }
 
           .recipe-grid {
@@ -150,55 +173,141 @@
             border-radius: 18px;
           }
 
-          .meta-cards {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 16px;
-          }
-
-          .meta-value {
-            font-size: 2rem;
-          }
-        }
-
-        @media (max-width: 600px) {
-          body {
-            font-size: 16px;
-          }
-
-          .container {
-            padding: 0 16px;
-          }
-
-          .hero {
-            text-align: center;
-            padding: 44px 0 56px;
-          }
-
-          h1 {
-            font-size: clamp(2.2rem, 9vw, 3.2rem);
-            line-height: 1.05;
-          }
-
-          .subtitle {
-            font-size: 1.1rem;
-          }
-
-          .cuisine-tag {
-            letter-spacing: 2px;
-            padding: 6px 16px;
-          }
-
-          .meta-cards {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            text-align: center;
+          .instruction-step {
+            gap: 12px;
           }
 
           .print-btn {
             position: static;
             display: block;
             width: 100%;
-            margin: 24px auto 0;
+            margin: 16px 0 0;
           }
+        }
+
+        @media (max-width: 600px) {
+          h1 {
+            font-size: clamp(2.2rem, 9vw, 3rem);
+            line-height: 1.05;
+          }
+
+          .subtitle {
+            font-size: 1.05rem;
+          }
+
+          .cuisine-tag {
+            margin: 0 auto 16px;
+            padding: 6px 16px;
+          }
+
+          .meta-value {
+            font-size: 1.8rem;
+          }
+
+          .tips-section {
+            padding: 24px;
+            border-radius: 18px;
+          }
+        }
+
+        .brand {
+          font-family: 'Playfair Display', serif;
+          text-transform: uppercase;
+          letter-spacing: 0.25em;
+          font-size: 0.95rem;
+          opacity: 0.85;
+          margin-bottom: 16px;
+        }
+
+        .servings-controls {
+          display: flex;
+          gap: 10px;
+          margin: 8px 0 16px;
+        }
+        .servings-controls button {
+          font-size: 1.5em;
+          width: 44px;
+          height: 44px;
+          border-radius: 999px;
+          border: none;
+          background: #eef0e8;
+          color: #1e3a5f;
+          cursor: pointer;
+        }
+        .servings-controls button:active { transform: scale(0.98); }
+
+        /* Checkboxes */
+        .ingredient-item { margin: 10px 0; }
+        .ingredient-check {
+          display: flex;
+          align-items: flex-start;
+          gap: 10px;
+          cursor: pointer;
+        }
+        .ingredient-check input {
+          width: 20px;
+          height: 20px;
+          margin-top: 4px;
+        }
+        .ingredient-check input:checked ~ .ingredient-qty,
+        .ingredient-check input:checked ~ .ingredient-name {
+          text-decoration: line-through;
+          opacity: 0.6;
+        }
+
+        .instruction-step { margin-bottom: 24px; }
+        .step-check {
+          display: flex;
+          align-items: flex-start;
+          gap: 16px;
+          cursor: pointer;
+        }
+        .step-check input {
+          width: 20px;
+          height: 20px;
+          margin-top: 6px;
+        }
+        .step-check input:checked ~ .step-number,
+        .step-check input:checked ~ .step-content {
+          text-decoration: line-through;
+          opacity: 0.6;
+        }
+
+        /* Footer */
+        .site-footer {
+          margin: 60px 0 30px;
+          text-align: center;
+          color: #556;
+          font-size: 0.95rem;
+        }
+        .site-footer .footer-love {
+          margin-top: 6px;
+          font-style: italic;
+        }
+
+        /* Make “Step 1” bold + clean layout */
+        .step-check {
+          display: flex;
+          align-items: flex-start;
+          gap: 12px; /* space between checkbox and step text */
+        }
+        .step-title {
+          font-weight: 700;
+          display: block;
+        }
+        .step-desc {
+          display: block;
+          margin-top: 4px;
+        }
+
+        /* Space between checkbox and ingredient quantity */
+        .ingredient-check {
+          display: flex;
+          align-items: center;
+          gap: 10px; /* checkbox → qty */
+        }
+        .ingredient-qty {
+          margin-right: 0.4em; /* qty → name */
         }
     </style>
 </head>
@@ -207,6 +316,7 @@
 
 <section class="hero">
     <div class="container">
+        <div class="brand">1Four1 Recipes</div>
         <span class="cuisine-tag">American</span>
 
         <h1>Scrambled Eggs with Spinach<br>
@@ -243,8 +353,10 @@
             <h2>Ingredients</h2>
             <p>Servings: <span id="servingsDisplay">3</span></p>
 
-            <button onclick="adjustServings(-1)">-</button>
-            <button onclick="adjustServings(1)">+</button>
+            <div class="servings-controls">
+                <button onclick="adjustServings(-1)">-</button>
+                <button onclick="adjustServings(1)">+</button>
+            </div>
 
             <ul class="ingredients-list" id="ingredientsList">
                 <li class="ingredient-item" data-base="6.0" data-unit="" data-name="large eggs"><label class="ingredient-check"><input type="checkbox"><span class="ingredient-qty">6</span> <span class="ingredient-name">large eggs</span></label></li>
@@ -262,7 +374,6 @@
                 <div class="instruction-step">
       <label class="step-check">
         <input type="checkbox">
-        <span class="step-number">1</span>
         <span class="step-content">
           <span class="step-title">Step 1</span>
           <span class="step-desc">Heat olive oil in a non-stick pan over medium heat.</span>
@@ -272,7 +383,6 @@
 <div class="instruction-step">
       <label class="step-check">
         <input type="checkbox">
-        <span class="step-number">2</span>
         <span class="step-content">
           <span class="step-title">Step 2</span>
           <span class="step-desc">Add spinach and sauté for 1-2 minutes until wilted.</span>
@@ -282,7 +392,6 @@
 <div class="instruction-step">
       <label class="step-check">
         <input type="checkbox">
-        <span class="step-number">3</span>
         <span class="step-content">
           <span class="step-title">Step 3</span>
           <span class="step-desc">Crack eggs into a bowl, whisk with salt and pepper.</span>
@@ -292,7 +401,6 @@
 <div class="instruction-step">
       <label class="step-check">
         <input type="checkbox">
-        <span class="step-number">4</span>
         <span class="step-content">
           <span class="step-title">Step 4</span>
           <span class="step-desc">Pour eggs into the pan with spinach.</span>
@@ -302,7 +410,6 @@
 <div class="instruction-step">
       <label class="step-check">
         <input type="checkbox">
-        <span class="step-number">5</span>
         <span class="step-content">
           <span class="step-title">Step 5</span>
           <span class="step-desc">Gently stir with a spatula until eggs are softly set.</span>
@@ -312,7 +419,6 @@
 <div class="instruction-step">
       <label class="step-check">
         <input type="checkbox">
-        <span class="step-number">6</span>
         <span class="step-content">
           <span class="step-title">Step 6</span>
           <span class="step-desc">Remove from heat while slightly underdone (they will continue cooking).</span>
@@ -322,7 +428,6 @@
 <div class="instruction-step">
       <label class="step-check">
         <input type="checkbox">
-        <span class="step-number">7</span>
         <span class="step-content">
           <span class="step-title">Step 7</span>
           <span class="step-desc">Serve immediately.</span>
@@ -344,6 +449,13 @@
 </div>
 
 <button class="print-btn" onclick="window.print()">Print Recipe</button>
+
+<footer class="site-footer">
+  <div class="container">
+    <div>All rights reserved. 1Four1. 2026</div>
+    <div class="footer-love">Made with love by Papi ❤️</div>
+  </div>
+</footer>
 
 <script>
     let currentServings = parseInt("3") || 3;
@@ -404,3 +516,6 @@
 
 </body>
 </html>
+```
+
+If you want me to reconcile duplicate `.ingredient-check` / `.step-check` blocks or remove any old ones, say which version you want kept.
