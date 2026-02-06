@@ -96,6 +96,11 @@
             list-style: none;
         }
 
+        .ingredient-qty {
+            margin-right: 0.4em;
+            display: inline-block;
+        }
+
         .instruction-step {
             display: flex;
             gap: 24px;
@@ -173,11 +178,11 @@
             <button onclick="adjustServings(1)">+</button>
 
             <ul class="ingredients-list" id="ingredientsList">
-                <li class="ingredient-item"><span class="ingredient-qty">6</span><span class="ingredient-name">large eggs</span></li>
-<li class="ingredient-item"><span class="ingredient-qty">2</span><span class="ingredient-name">cups fresh spinach</span></li>
-<li class="ingredient-item"><span class="ingredient-qty">2</span><span class="ingredient-name">tbsp olive oil</span></li>
-<li class="ingredient-item"><span class="ingredient-qty">1/2</span><span class="ingredient-name">tsp salt</span></li>
-<li class="ingredient-item"><span class="ingredient-qty">1/4</span><span class="ingredient-name">tsp black pepper</span></li>
+                <li class="ingredient-item" data-base="6.0" data-unit="" data-name="large eggs"><span class="ingredient-qty">6</span> <span class="ingredient-name">large eggs</span></li>
+<li class="ingredient-item" data-base="2.0" data-unit="cups" data-name="fresh spinach"><span class="ingredient-qty">2</span> <span class="ingredient-name">cups fresh spinach</span></li>
+<li class="ingredient-item" data-base="2.0" data-unit="tbsp" data-name="olive oil"><span class="ingredient-qty">2</span> <span class="ingredient-name">tbsp olive oil</span></li>
+<li class="ingredient-item" data-base="0.5" data-unit="tsp" data-name="salt"><span class="ingredient-qty">1/2</span> <span class="ingredient-name">tsp salt</span></li>
+<li class="ingredient-item" data-base="0.25" data-unit="tsp" data-name="black pepper"><span class="ingredient-qty">1/4</span> <span class="ingredient-name">tsp black pepper</span></li>
             </ul>
         </aside>
 
@@ -254,12 +259,11 @@
     let currentServings = parseInt("3") || 3;
     const baseServings = parseInt("3") || 3;
 
-    function adjustServings(change) {
-        const next = currentServings + change;
-        if (next < 1 || next > 12) return;
-        currentServings = next;
-        document.getElementById('servingsDisplay').textContent = currentServings;
-        updateIngredients();
+    const timeEl = document.querySelector('.meta-cards .meta-value');
+    const baseTime = timeEl ? (parseFloat(timeEl.textContent) || 0) : 0;
+
+    function formatQty(x) {
+        return x.toFixed(2).replace(/.00$/, '').replace(/(.d)0$/, '$1');
     }
 
     function updateIngredients() {
@@ -267,10 +271,33 @@
         document.querySelectorAll('.ingredient-item').forEach(item => {
             const base = parseFloat(item.dataset.base);
             if (!base) return;
-            const qty = (base * ratio).toFixed(2).replace(/.00$/, '');
-            item.querySelector('.ingredient-qty').textContent =
-                `${qty} ${item.dataset.unit}`;
+
+            const unit = item.dataset.unit || "";
+            const name = item.dataset.name || "";
+
+            const qty = formatQty(base * ratio);
+            const qtyEl = item.querySelector('.ingredient-qty');
+            const nameEl = item.querySelector('.ingredient-name');
+
+            if (qtyEl) qtyEl.textContent = qty;
+            if (nameEl) nameEl.textContent = unit ? `${unit} ${name}` : name;
         });
+    }
+
+    function updateTime() {
+        if (!timeEl || !baseTime) return;
+        const ratio = currentServings / baseServings;
+        const newTime = Math.max(1, Math.round(baseTime * ratio));
+        timeEl.textContent = newTime;
+    }
+
+    function adjustServings(change) {
+        const next = currentServings + change;
+        if (next < 1 || next > 12) return;
+        currentServings = next;
+        document.getElementById('servingsDisplay').textContent = currentServings;
+        updateIngredients();
+        updateTime();
     }
 
     function toggleStep(el) {
@@ -280,3 +307,4 @@
 
 </body>
 </html>
+
