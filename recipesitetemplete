@@ -1,6 +1,3 @@
-Below is the full HTML with your new CSS appended at the very end of the `<style>` block (no other changes).  
-
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -449,6 +446,3 @@ Below is the full HTML with your new CSS appended at the very end of the `<style
 
 </body>
 </html>
-```
-
-If you want me to reconcile duplicate `.ingredient-check` / `.step-check` blocks or remove any old ones, say which version you want kept.
