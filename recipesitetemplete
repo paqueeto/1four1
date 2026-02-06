@@ -206,7 +206,8 @@
     let currentServings = parseInt("{{SERVINGS}}") || 3;
     const baseServings = parseInt("{{SERVINGS}}") || 3;
 
-    const timeEl = document.querySelector('.meta-cards .meta-value');
+    const timeEl = document.querySelector('.meta-cards .meta-value'); // Minutes
+    const servingsMetaEl = document.querySelectorAll('.meta-cards .meta-value')[1]; // Servings
     const baseTime = timeEl ? (parseFloat(timeEl.textContent) || 0) : 0;
 
     function formatQty(x) {
@@ -238,13 +239,19 @@
         timeEl.textContent = newTime;
     }
 
+    function updateServingsMeta() {
+        if (servingsMetaEl) servingsMetaEl.textContent = currentServings;
+    }
+
     function adjustServings(change) {
         const next = currentServings + change;
         if (next < 1 || next > 12) return;
         currentServings = next;
+
         document.getElementById('servingsDisplay').textContent = currentServings;
         updateIngredients();
         updateTime();
+        updateServingsMeta();
     }
 
     function toggleStep(el) {
@@ -254,4 +261,3 @@
 
 </body>
 </html>
-
