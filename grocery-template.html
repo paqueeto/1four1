@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Weekly Grocery List</title>
+  <title>This Week's Grocery List</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -49,6 +49,25 @@
 
     .sub { font-size: 1.2rem; opacity: 0.95; }
     .meta { margin-top: 14px; color: var(--accent-gold); font-size: 1.25rem; }
+
+    .brand {
+      font-family: 'Playfair Display', serif;
+      text-transform: uppercase;
+      letter-spacing: 0.25em;
+      font-size: 0.95rem;
+      opacity: 0.85;
+      margin-bottom: 16px;
+    }
+
+    .cuisine-tag {
+      background: var(--terracotta);
+      padding: 8px 24px;
+      border-radius: 30px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      display: inline-block;
+      margin-bottom: 24px;
+    }
 
     .view-tabs {
       margin-top: 28px;
@@ -316,7 +335,10 @@
 
   <section class="hero">
     <div class="container">
-      <h1>Weekly Grocery List</h1>
+      <div class="brand">1FOUR1 RECIPES</div>
+      <span id="hero-pill" class="cuisine-tag">Grocery List</span>
+
+      <h1 id="hero-title">This Week's Grocery List</h1>
       <div class="sub">{{WEEK_RANGE}}</div>
       <div class="meta">Total items: {{TOTAL_ITEMS}}</div>
 
@@ -374,12 +396,23 @@
         .replaceAll('"', "&quot;");
     }
 
+    function updateHero(view) {
+      const isRecipes = view === "recipes";
+      const title = isRecipes ? "This Week's Recipes" : "This Week's Grocery List";
+      const pill = isRecipes ? "Weekly Recipes" : "Grocery List";
+
+      document.getElementById("hero-title").textContent = title;
+      document.getElementById("hero-pill").textContent = pill;
+      document.title = title;
+    }
+
     function setView(view) {
       activeView = view;
       document.getElementById("tab-grocery").classList.toggle("active", view === "grocery");
       document.getElementById("tab-recipes").classList.toggle("active", view === "recipes");
       document.getElementById("view-grocery").classList.toggle("active", view === "grocery");
       document.getElementById("view-recipes").classList.toggle("active", view === "recipes");
+      updateHero(view);
     }
 
     function setMeal(meal) {
@@ -404,8 +437,6 @@
         listEl.innerHTML = `
           <div class="empty-state">
             No recipes found for ${esc(activeMeal)}.
-            <br /><br />
-            Make sure your row objects include title/ingredients/steps columns, not only grocery column 17.
           </div>
         `;
         return;
@@ -481,12 +512,9 @@
       `;
     }
 
-    function initRecipes() {
-      renderRecipeList();
-      renderRecipeDetail();
-    }
-
-    initRecipes();
+    updateHero("grocery");
+    renderRecipeList();
+    renderRecipeDetail();
   </script>
 </body>
 </html>
