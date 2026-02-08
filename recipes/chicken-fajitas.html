@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chicken Fajitas | Mexican</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --mediterranean-blue: #1e3a5f;
+            --olive-green: #556b2f;
+            --terracotta: #c65d3b;
+            --feta-white: #f8f6f0;
+            --warm-stone: #e6e2d3;
+            --deep-sea: #0f2027;
+            --accent-gold: #d4a373;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            background: linear-gradient(135deg, var(--feta-white), var(--warm-stone));
+            color: var(--deep-sea);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, var(--mediterranean-blue), var(--deep-sea));
+            color: var(--feta-white);
+            padding: 80px 0 120px;
+            clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+        }
+
+        .cuisine-tag {
+            background: var(--terracotta);
+            padding: 8px 24px;
+            border-radius: 30px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 8vw, 5rem);
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            font-style: italic;
+            margin-bottom: 40px;
+        }
+
+        .meta-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+        }
+
+        .meta-value {
+            font-size: 2.5rem;
+            color: var(--accent-gold);
+        }
+
+        .recipe-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 40px;
+        }
+
+        .ingredients-panel,
+        .instructions-panel {
+            background: white;
+            padding: 40px;
+            border-radius: 24px;
+        }
+
+        .ingredients-list {
+            list-style: none;
+        }
+
+        .ingredient-qty {
+            margin-right: 0.4em;
+            display: inline-block;
+        }
+
+        .instruction-step {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 24px;
+            cursor: pointer;
+        }
+
+        .tips-section {
+            margin-top: 40px;
+            background: linear-gradient(135deg, var(--olive-green), #3d4f1f);
+            color: white;
+            padding: 40px;
+            border-radius: 24px;
+        }
+
+        .tips-list {
+            list-style: none;
+        }
+
+        .print-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--terracotta);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* --- Mobile & tablet layout fixes --- */
+        @media (max-width: 1200px) {
+          html, body {
+            width: 100%;
+            overflow-x: hidden;
+          }
+
+          .hero {
+            clip-path: none;
+          }
+
+          .container {
+            width: min(100% - 32px, 1000px);
+          }
+        }
+
+        @media (max-width: 900px) {
+          .hero {
+            padding: 48px 0 56px;
+            text-align: center;
+          }
+
+          .meta-cards {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+          }
+
+          .recipe-grid {
+            grid-template-columns: 1fr;
+            gap: 24px;
+          }
+
+          .ingredients-panel,
+          .instructions-panel {
+            padding: 24px;
+            border-radius: 18px;
+          }
+
+          .instruction-step {
+            gap: 12px;
+          }
+
+          .print-btn {
+            position: static;
+            display: block;
+            width: 100%;
+            margin: 16px 0 0;
+          }
+        }
+
+        @media (max-width: 600px) {
+          h1 {
+            font-size: clamp(2.2rem, 9vw, 3rem);
+            line-height: 1.05;
+          }
+
+          .subtitle {
+            font-size: 1.05rem;
+          }
+
+          .cuisine-tag {
+            margin: 0 auto 16px;
+            padding: 6px 16px;
+          }
+
+          .meta-value {
+            font-size: 1.8rem;
+          }
+
+          .tips-section {
+            padding: 24px;
+            border-radius: 18px;
+          }
+        }
+
+        .brand {
+          font-family: 'Playfair Display', serif;
+          text-transform: uppercase;
+          letter-spacing: 0.25em;
+          font-size: 0.95rem;
+          opacity: 0.85;
+          margin-bottom: 16px;
+        }
+
+        .servings-controls {
+          display: flex;
+          gap: 10px;
+          margin: 8px 0 16px;
+        }
+        .servings-controls button {
+          font-size: 1.5em;
+          width: 44px;
+          height: 44px;
+          border-radius: 999px;
+          border: none;
+          background: #eef0e8;
+          color: #1e3a5f;
+          cursor: pointer;
+        }
+        .servings-controls button:active { transform: scale(0.98); }
+
+        /* Checkboxes */
+        .ingredient-item { margin: 10px 0; }
+        .ingredient-check {
+          display: flex;
+          align-items: flex-start;
+          gap: 10px;
+          cursor: pointer;
+        }
+        .ingredient-check input {
+          width: 20px;
+          height: 20px;
+          margin-top: 4px;
+        }
+        .ingredient-check input:checked ~ .ingredient-qty,
+        .ingredient-check input:checked ~ .ingredient-name {
+          text-decoration: line-through;
+          opacity: 0.6;
+        }
+
+        .instruction-step { margin-bottom: 24px; }
+        .step-check {
+          display: flex;
+          align-items: flex-start;
+          gap: 16px;
+          cursor: pointer;
+        }
+        .step-check input {
+          width: 20px;
+          height: 20px;
+          margin-top: 6px;
+        }
+        .step-check input:checked ~ .step-number,
+        .step-check input:checked ~ .step-content {
+          text-decoration: line-through;
+          opacity: 0.6;
+        }
+
+        /* Footer */
+        .site-footer {
+          margin: 60px 0 30px;
+          text-align: center;
+          color: #556;
+          font-size: 0.95rem;
+        }
+        .site-footer .footer-love {
+          margin-top: 6px;
+          font-style: italic;
+        }
+
+        /* Make “Step 1” bold + clean layout */
+        .step-check {
+          display: flex;
+          align-items: flex-start;
+          gap: 12px; /* space between checkbox and step text */
+        }
+        .step-title {
+          font-weight: 700;
+          display: block;
+        }
+        .step-desc {
+          display: block;
+          margin-top: 4px;
+        }
+
+        /* Space between checkbox and ingredient quantity */
+        .ingredient-check {
+          display: flex;
+          align-items: center;
+          gap: 10px; /* checkbox → qty */
+        }
+        .ingredient-qty {
+          margin-right: 0.4em; /* qty → name */
+        }
+    </style>
+</head>
+
+<body>
+
+<section class="hero">
+    <div class="container">
+        <div class="brand">1Four1 Recipes</div>
+        <span class="cuisine-tag">Mexican</span>
+
+        <h1>Chicken Fajitas<br>
+            <span style="font-size:0.6em;opacity:0.9;">Mexican Style</span>
+        </h1>
+
+        <p class="subtitle">A delicious Mexican recipe</p>
+
+        <div class="meta-cards">
+            <div>
+                <span class="meta-value">25</span>
+                <div>Minutes</div>
+            </div>
+            <div>
+                <span class="meta-value">3</span>
+                <div>Servings</div>
+            </div>
+            <div>
+                <span class="meta-value">360</span>
+                <div>Calories</div>
+            </div>
+            <div>
+                <span class="meta-value">★★☆</span>
+                <div>Difficulty</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container">
+    <div class="recipe-grid">
+
+        <aside class="ingredients-panel">
+            <h2>Ingredients</h2>
+            <p>Servings: <span id="servingsDisplay">3</span></p>
+
+            <div class="servings-controls">
+                <button onclick="adjustServings(-1)">-</button>
+                <button onclick="adjustServings(1)">+</button>
+            </div>
+
+            <ul class="ingredients-list" id="ingredientsList">
+                <li class="ingredient-item" data-base="1.5" data-unit="lbs" data-name="chicken breast (sliced)"><label class="ingredient-check"><input type="checkbox"><span class="ingredient-qty">1.5</span> <span class="ingredient-name">lbs chicken breast (sliced)</span></label></li>
+<li class="ingredient-item" data-base="2.0" data-unit="" data-name="bell peppers (sliced)"><label class="ingredient-check"><input type="checkbox"><span class="ingredient-qty">2</span> <span class="ingredient-name">bell peppers (sliced)</span></label></li>
+<li class="ingredient-item" data-base="1.0" data-unit="" data-name="onion (sliced)"><label class="ingredient-check"><input type="checkbox"><span class="ingredient-qty">1</span> <span class="ingredient-name">onion (sliced)</span></label></li>
+<li class="ingredient-item" data-base="2.0" data-unit="tbsp" data-name="fajita seasoning (GF)"><label class="ingredient-check"><input type="checkbox"><span class="ingredient-qty">2</span> <span class="ingredient-name">tbsp fajita seasoning (GF)</span></label></li>
+<li class="ingredient-item" data-base="3.0" data-unit="tbsp" data-name="vegetable oil"><label class="ingredient-check"><input type="checkbox"><span class="ingredient-qty">3</span> <span class="ingredient-name">tbsp vegetable oil</span></label></li>
+<li class="ingredient-item" data-base="12.0" data-unit="" data-name="corn tortillas"><label class="ingredient-check"><input type="checkbox"><span class="ingredient-qty">12</span> <span class="ingredient-name">corn tortillas</span></label></li>
+<li class="ingredient-item" data-base="0.5" data-unit="cup" data-name="salsa"><label class="ingredient-check"><input type="checkbox"><span class="ingredient-qty">1/2</span> <span class="ingredient-name">cup salsa</span></label></li>
+<li class="ingredient-item" data-base="0.5" data-unit="cup" data-name="sour cream"><label class="ingredient-check"><input type="checkbox"><span class="ingredient-qty">1/2</span> <span class="ingredient-name">cup sour cream</span></label></li>
+<li class="ingredient-item" data-base="0.25" data-unit="cup" data-name="fresh cilantro (chopped)"><label class="ingredient-check"><input type="checkbox"><span class="ingredient-qty">1/4</span> <span class="ingredient-name">cup fresh cilantro (chopped)</span></label></li>
+<li class="ingredient-item" data-base="" data-unit="" data-name="lime wedges"><label class="ingredient-check"><input type="checkbox"><span class="ingredient-name">lime wedges</span></label></li>
+            </ul>
+        </aside>
+
+        <main class="instructions-panel">
+            <h2>Preparation</h2>
+
+            <div class="instructions-list" id="instructionsList">
+                <div class="instruction-step">
+      <label class="step-check">
+        <input type="checkbox">
+        <span class="step-content">
+          <span class="step-title">Step 1</span>
+          <span class="step-desc">Slice chicken, bell peppers, and onion into strips.</span>
+        </span>
+      </label>
+    </div>
+<div class="instruction-step">
+      <label class="step-check">
+        <input type="checkbox">
+        <span class="step-content">
+          <span class="step-title">Step 2</span>
+          <span class="step-desc">Toss chicken with fajita seasoning.</span>
+        </span>
+      </label>
+    </div>
+<div class="instruction-step">
+      <label class="step-check">
+        <input type="checkbox">
+        <span class="step-content">
+          <span class="step-title">Step 3</span>
+          <span class="step-desc">Heat 2 tbsp oil in a large pan over medium-high heat.</span>
+        </span>
+      </label>
+    </div>
+<div class="instruction-step">
+      <label class="step-check">
+        <input type="checkbox">
+        <span class="step-content">
+          <span class="step-title">Step 4</span>
+          <span class="step-desc">Cook chicken 5-6 minutes until done. Remove and set aside.</span>
+        </span>
+      </label>
+    </div>
+<div class="instruction-step">
+      <label class="step-check">
+        <input type="checkbox">
+        <span class="step-content">
+          <span class="step-title">Step 5</span>
+          <span class="step-desc">Add remaining oil, peppers, and onion to pan.</span>
+        </span>
+      </label>
+    </div>
+<div class="instruction-step">
+      <label class="step-check">
+        <input type="checkbox">
+        <span class="step-content">
+          <span class="step-title">Step 6</span>
+          <span class="step-desc">Sauté 5-7 minutes until tender and slightly charred.</span>
+        </span>
+      </label>
+    </div>
+<div class="instruction-step">
+      <label class="step-check">
+        <input type="checkbox">
+        <span class="step-content">
+          <span class="step-title">Step 7</span>
+          <span class="step-desc">Return chicken to pan, toss to combine.</span>
+        </span>
+      </label>
+    </div>
+<div class="instruction-step">
+      <label class="step-check">
+        <input type="checkbox">
+        <span class="step-content">
+          <span class="step-title">Step 8</span>
+          <span class="step-desc">Serve with warm tortillas, salsa, sour cream, cilantro, and lime.</span>
+        </span>
+      </label>
+    </div>
+            </div>
+
+            <div class="tips-section">
+                <h3>Chef’s Secrets</h3>
+                <ul class="tips-list">
+                    <li class="tip-item">Make sure fajita seasoning is GF</li>
+<li class="tip-item">Cook on high heat for nice char on vegetables.</li>
+                </ul>
+            </div>
+        </main>
+
+    </div>
+</div>
+
+<button class="print-btn" onclick="window.print()">Print Recipe</button>
+
+<footer class="site-footer">
+  <div class="container">
+    <div>All rights reserved. 1Four1. 2026</div>
+    <div class="footer-love">Made with love by Papi ❤️</div>
+  </div>
+</footer>
+
+<script>
+    let currentServings = parseInt("3") || 3;
+    const baseServings = parseInt("3") || 3;
+
+    const timeEl = document.querySelector('.meta-cards .meta-value'); // Minutes
+    const servingsMetaEl = document.querySelectorAll('.meta-cards .meta-value')[1]; // Servings
+    const baseTime = timeEl ? (parseFloat(timeEl.textContent) || 0) : 0;
+
+    function formatQty(x) {
+        return x.toFixed(2).replace(/.00$/, '').replace(/(.d)0$/, '$1');
+    }
+
+    function updateIngredients() {
+        const ratio = currentServings / baseServings;
+        document.querySelectorAll('.ingredient-item').forEach(item => {
+            const base = parseFloat(item.dataset.base);
+            if (!base) return;
+
+            const unit = item.dataset.unit || "";
+            const name = item.dataset.name || "";
+
+            const qty = formatQty(base * ratio);
+            const qtyEl = item.querySelector('.ingredient-qty');
+            const nameEl = item.querySelector('.ingredient-name');
+
+            if (qtyEl) qtyEl.textContent = qty;
+            if (nameEl) nameEl.textContent = unit ? `${unit} ${name}` : name;
+        });
+    }
+
+    function updateTime() {
+        if (!timeEl || !baseTime) return;
+        const ratio = currentServings / baseServings;
+        const newTime = Math.max(1, Math.round(baseTime * ratio));
+        timeEl.textContent = newTime;
+    }
+
+    function updateServingsMeta() {
+        if (servingsMetaEl) servingsMetaEl.textContent = currentServings;
+    }
+
+    function adjustServings(change) {
+        const next = currentServings + change;
+        if (next < 1 || next > 12) return;
+        currentServings = next;
+
+        document.getElementById('servingsDisplay').textContent = currentServings;
+        updateIngredients();
+        updateTime();
+        updateServingsMeta();
+    }
+
+    function toggleStep(el) {
+        el.classList.toggle('completed');
+    }
+</script>
+
+</body>
+</html>
